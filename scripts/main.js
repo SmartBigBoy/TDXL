@@ -51,15 +51,24 @@
         const container = document.getElementById('giscus-comments');
         if (!container) return;
 
-        // ── 配置区域（替换为你的信息）──
-        const GISCUS_REPO = '';           // e.g. 'yourname/yourrepo'
-        const GISCUS_REPO_ID = '';         // 在 giscus.app 获取
-        const GISCUS_CATEGORY = 'Announcements';
-        const GISCUS_CATEGORY_ID = '';     // 在 giscus.app 获取
-        // ────────────────────────────────
+        // ── 配置区域 ──
+        const GISCUS_REPO = 'SmartBigBoy/TDXL';
+        const GISCUS_REPO_ID = '';         // ⬅ 去 giscus.app 获取
+        const GISCUS_CATEGORY = 'General';
+        const GISCUS_CATEGORY_ID = '';     // ⬅ 去 giscus.app 获取
+        // ──────────────
 
-        if (!GISCUS_REPO || !GISCUS_REPO_ID) {
-            container.innerHTML = '<p style="color:var(--gray-400);font-size:0.85rem">💬 评论功能尚未配置。站长请在 <a href="https://giscus.app" target="_blank">giscus.app</a> 完成设置。</p>';
+        if (!GISCUS_REPO_ID || !GISCUS_CATEGORY_ID) {
+            container.innerHTML =
+                '<div style="padding:20px;background:#FBF0EE;border-radius:8px;font-size:0.9rem">' +
+                '<strong style="color:#B85450">💬 评论功能待配置</strong>' +
+                '<p style="margin-top:8px;color:var(--text-secondary)">站长请按以下步骤操作：</p>' +
+                '<ol style="margin-top:6px;padding-left:18px;color:var(--text-secondary);line-height:1.8">' +
+                '<li>去仓库 <strong>Settings → General</strong>，勾选 <strong>Discussions</strong></li>' +
+                '<li>安装 <a href="https://github.com/apps/giscus" target="_blank">Giscus App</a> 到本仓库</li>' +
+                '<li>访问 <a href="https://giscus.app" target="_blank">giscus.app</a>，输入仓库名 <code>SmartBigBoy/TDXL</code></li>' +
+                '<li>把生成的 <code>data-repo-id</code> 和 <code>data-category-id</code> 填入 <code>scripts/main.js</code></li>' +
+                '</ol></div>';
             return;
         }
 
