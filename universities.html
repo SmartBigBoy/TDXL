@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>院校库 — 同等学力申硕信息手册</title>
+    <meta name="description" content="全国同等学力申硕招生院校信息汇总，可按地区、院校层次筛选查询。">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .uni-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 24px;
+            padding: 16px 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            align-items: center;
+        }
+        .uni-filter-bar label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 4px;
+        }
+        .uni-filter-bar select {
+            padding: 7px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.88rem;
+            background: #fff;
+            color: var(--text);
+            min-width: 120px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .uni-filter-bar select:focus { outline: none; border-color: var(--accent); }
+        .uni-filter-count {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+        .uni-list { display: flex; flex-direction: column; gap: 10px; }
+        .uni-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.15s;
+        }
+        .uni-item:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(201,149,60,0.08); }
+        .uni-item-hidden { display: none; }
+        .uni-rank {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            width: 32px;
+            text-align: center;
+        }
+        .uni-info { flex: 1; min-width: 0; }
+        .uni-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .uni-name a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .uni-name a:hover { color: var(--primary-light); }
+        .uni-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .uni-tag {
+            font-size: 0.72rem;
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        .tag-985 { background: #FEF3C7; color: #92400E; }
+        .tag-211 { background: #DBEAFE; color: #1E40AF; }
+        .tag-普通 { background: #F3F4F6; color: #6B7280; }
+        .tag-北京 { background: #FCE7F3; color: #9D174D; }
+        .tag-上海 { background: #E0F2FE; color: #0369A1; }
+        .tag-广东 { background: #D1FAE5; color: #065F46; }
+        .tag-江苏 { background: #EDE9FE; color: #5B21B6; }
+        .tag-浙江 { background: #FEF3C7; color: #92400E; }
+        .tag-湖北 { background: #FFE4E6; color: #9F1239; }
+        .tag-四川 { background: #FCE7F3; color: #9D174D; }
+        .tag-陕西 { background: #DBEAFE; color: #1E40AF; }
+        .tag-湖南 { background: #D1FAE5; color: #065F46; }
+        .tag-辽宁 { background: #EDE9FE; color: #5B21B6; }
+        .tag-重庆 { background: #FFE4E6; color: #9F1239; }
+        .tag-福建 { background: #FEF3C7; color: #92400E; }
+        .tag-天津 { background: #E0F2FE; color: #0369A1; }
+        .tag-山东 { background: #D1FAE5; color: #065F46; }
+        .tag-吉林 { background: #EDE9FE; color: #5B21B6; }
+        .tag-黑龙江 { background: #FFE4E6; color: #9F1239; }
+        .tag-安徽 { background: #FCE7F3; color: #9D174D; }
+        .tag-其他 { background: #F3F4F6; color: #6B7280; }
+
+        .uni-majors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .uni-major-link {
+            font-size: 0.78rem;
+            padding: 2px 8px;
+            border-radius: 3px;
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.12s;
+            display: inline-block;
+            line-height: 1.6;
+        }
+        .uni-major-link:hover {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .uni-table-wrap { overflow-x: auto; margin: 0 0 24px; }
+        .uni-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: #fff; }
+        .uni-table thead th {
+            background: var(--surface);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+            font-size: 0.82rem;
+        }
+        .uni-table tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--surface-alt);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+        .uni-table tbody tr:hover { background: var(--surface); }
+        .uni-name-link {
+            font-weight: 600;
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        .uni-name-link:hover { text-decoration: underline; }
+        .uni-tag-sm {
+            display: inline-block;
+            font-size: 0.72rem;
+            padding: 1px 8px;
+            border-radius: 3px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        @media (max-width: 768px) {
+            .uni-table thead { display: none; }
+            .uni-table tbody td {
+                display: block;
+                padding: 6px 12px;
+                border-bottom: none;
+            }
+            .uni-table tbody tr {
+                display: block;
+                padding: 12px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                margin-bottom: 8px;
+                background: #fff;
+            }
+            .uni-table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-muted);
+                font-size: 0.75rem;
+                display: block;
+                margin-bottom: 2px;
+            }
+            .uni-majors { gap: 3px; }
+        }
+        .uni-note {
+            margin-top: 24px;
+            padding: 16px 20px;
+            background: var(--surface);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        @media (max-width: 600px) {
+            .uni-filter-bar label { display: none; }
+            .uni-filter-bar select { flex: 1; min-width: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="site-title">📘 同等学力申硕</div>
+            <div class="site-subtitle">报考信息手册</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">总览</div>
+                <a href="index.html"><span class="nav-icon">🏠</span> 首页</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">报考指南</div>
+                <a href="guide.html"><span class="nav-icon">📋</span> 报考流程</a>
+                <a href="policy.html"><span class="nav-icon">📜</span> 政策法规</a>
+                <a href="exam.html"><span class="nav-icon">📝</span> 考试备考</a>
+                <a href="cost.html"><span class="nav-icon">💰</span> 费用明细</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">院校专业</div>
+                <a href="universities.html" class="active"><span class="nav-icon">🏛️</span> 院校库</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">重要提醒</div>
+                <a href="scam-alert.html"><span class="nav-icon">⚠️</span> 防骗指南</a>
+                <a href="faq.html"><span class="nav-icon">❓</span> 常见问题</a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>🏛️ 院校库</h1>
+            <p class="page-desc">开设同等学力申硕的部分院校信息汇总，可按地区和院校层次筛选。数据持续更新中。</p>
+            <span class="page-badge badge-new">持续更新</span>
+        </div>
+
+        <div class="content">
+            <div class="uni-filter-bar">
+                <label for="filterRegion">地区</label>
+                <select id="filterRegion">
+                    <option value="all">全部</option>
+                    <option value="北京">北京</option>
+                    <option value="上海">上海</option>
+                    <option value="广东">广东</option>
+                    <option value="江苏">江苏</option>
+                    <option value="浙江">浙江</option>
+                    <option value="湖北">湖北</option>
+                    <option value="四川">四川</option>
+                    <option value="陕西">陕西</option>
+                    <option value="湖南">湖南</option>
+                    <option value="辽宁">辽宁</option>
+                    <option value="重庆">重庆</option>
+                    <option value="福建">福建</option>
+                    <option value="天津">天津</option>
+                    <option value="山东">山东</option>
+                    <option value="吉林">吉林</option>
+                    <option value="黑龙江">黑龙江</option>
+                    <option value="安徽">安徽</option>
+                    <option value="其他">其他</option>
+                </select>
+
+                <label for="filterTier">层次</label>
+                <select id="filterTier">
+                    <option value="all">全部</option>
+                    <option value="985">985 院校</option>
+                    <option value="211">211 院校</option>
+                    <option value="普通">普通院校</option>
+                </select>
+
+                <label for="filterMajor">专业</label>
+                <select id="filterMajor">
+                    <option value="all">全部专业</option>
+                </select>
+
+                <span class="uni-filter-count" id="uniCount">共 0 所院校</span>
+            </div>
+
+            <div class="uni-table-wrap">
+                <table class="uni-table" id="uniTable">
+                    <thead>
+                        <tr>
+                            <th style="width:22%">院校名称</th>
+                            <th style="width:8%">地区</th>
+                            <th style="width:8%">层次</th>
+                            <th>招生专业（点击专业查看学校官网）</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uniBody"></tbody>
+                </table>
+            </div>
+
+            <div class="uni-note">
+                <strong>📢 数据来源与查询方法</strong><br>
+                · 以上数据来源于 <strong>全国同等学力人员申请硕士学位管理工作信息平台</strong>（<a href="https://tdxl.chsi.com.cn" target="_blank">tdxl.chsi.com.cn</a>），由学信网/教育部学位中心运营。<br>
+                · 各校招生专业每年可能调整，完整、准确的院校和专业名单请登录平台查看 <strong>"接受单位名单"</strong> 和 <strong>"接受学科名单"</strong>。<br>
+                · 你也可以直接访问目标院校的研究生院官网，查看最新的《同等学力申硕招生简章》。<br>
+                · 如果你了解其他院校的招生信息，欢迎在评论区补充，我们会持续更新。
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h2>💬 交流讨论</h2>
+            <div id="giscus-comments"></div>
+        </div>
+
+        <footer class="page-footer">
+            <p>📢 院校信息以各院校官网最新招生简章为准。</p>
+        </footer>
+    </main>
+
+    <script>
+    // ===== 院校数据库 =====
+    // 数据来源：全国同等学力人员申请硕士学位管理工作信息平台 (tdxl.chsi.com.cn) 及各校招生简章
+    // 各校实际招生专业以平台"接受学科名单"及学校最新招生简章为准
+    const universities = [
+        // ═══ 北京 ═══
+        { name: '北京大学', region: '北京', tier: '985', url: 'https://www.pku.edu.cn',
+          majors: ['法学', '金融学', '经济学', '公共管理', '社会学', '计算机科学与技术', '中国语言文学', '哲学'] },
+        { name: '清华大学', region: '北京', tier: '985', url: 'https://www.tsinghua.edu.cn',
+          majors: ['法学', '公共管理', '工商管理', '计算机科学与技术', '金融学', '社会学'] },
+        { name: '中国人民大学', region: '北京', tier: '985', url: 'https://www.ruc.edu.cn',
+          majors: ['法学', '金融学', '企业管理', '会计学', '新闻学', '社会学', '行政管理', '马克思主义理论'] },
+        { name: '北京师范大学', region: '北京', tier: '985', url: 'https://www.bnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '外国语言文学', '哲学', '历史学'] },
+        { name: '北京理工大学', region: '北京', tier: '985', url: 'https://www.bit.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '法学', '公共管理', '机械工程'] },
+        { name: '北京航空航天大学', region: '北京', tier: '985', url: 'https://www.buaa.edu.cn',
+          majors: ['工商管理', '公共管理', '计算机科学与技术', '法学'] },
+        { name: '中国政法大学', region: '北京', tier: '211', url: 'https://www.cupl.edu.cn',
+          majors: ['法学', '政治学', '行政管理', '社会学', '马克思主义理论', '应用心理学'] },
+        { name: '对外经济贸易大学', region: '北京', tier: '211', url: 'https://www.uibe.edu.cn',
+          majors: ['金融学', '国际贸易学', '企业管理', '会计学', '法学'] },
+        { name: '中央财经大学', region: '北京', tier: '211', url: 'https://www.cufe.edu.cn',
+          majors: ['金融学', '会计学', '经济学', '企业管理', '保险学', '财政学'] },
+        { name: '北京邮电大学', region: '北京', tier: '211', url: 'https://www.bupt.edu.cn',
+          majors: ['计算机科学与技术', '信息与通信工程', '工商管理'] },
+        { name: '北京科技大学', region: '北京', tier: '211', url: 'https://www.ustb.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '法学', '公共管理'] },
+        { name: '中国农业大学', region: '北京', tier: '985', url: 'https://www.cau.edu.cn',
+          majors: ['公共管理', '工商管理', '法学', '社会学'] },
+        { name: '北京交通大学', region: '北京', tier: '211', url: 'https://www.bjtu.edu.cn',
+          majors: ['计算机科学与技术', '交通运输工程', '工商管理', '应用经济学'] },
+        { name: '华北电力大学', region: '北京', tier: '211', url: 'https://www.ncepu.edu.cn',
+          majors: ['电气工程', '动力工程', '工商管理', '计算机科学与技术'] },
+        { name: '北京外国语大学', region: '北京', tier: '211', url: 'https://www.bfsu.edu.cn',
+          majors: ['英语', '翻译', '外国语言文学', '国际关系'] },
+        { name: '中国传媒大学', region: '北京', tier: '211', url: 'https://www.cuc.edu.cn',
+          majors: ['新闻学', '传播学', '戏剧与影视学', '中国语言文学'] },
+        { name: '首都师范大学', region: '北京', tier: '普通', url: 'https://www.cnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '历史学', '美术学'] },
+        { name: '首都经济贸易大学', region: '北京', tier: '普通', url: 'https://www.cueb.edu.cn',
+          majors: ['金融学', '会计学', '经济学', '企业管理', '劳动经济学'] },
+        { name: '北京工商大学', region: '北京', tier: '普通', url: 'https://www.btbu.edu.cn',
+          majors: ['金融学', '会计学', '企业管理', '法学'] },
+        { name: '北京建筑大学', region: '北京', tier: '普通', url: 'https://www.bucea.edu.cn',
+          majors: ['建筑学', '土木工程', '工商管理'] },
+        // ═══ 上海 ═══
+        { name: '复旦大学', region: '上海', tier: '985', url: 'https://www.fudan.edu.cn',
+          majors: ['法学', '金融学', '经济学', '公共管理', '新闻学', '社会学', '计算机科学与技术'] },
+        { name: '上海交通大学', region: '上海', tier: '985', url: 'https://www.sjtu.edu.cn',
+          majors: ['工商管理', '公共管理', '法学', '计算机科学与技术', '金融学'] },
+        { name: '同济大学', region: '上海', tier: '985', url: 'https://www.tongji.edu.cn',
+          majors: ['工商管理', '公共管理', '法学', '计算机科学与技术', '建筑学'] },
+        { name: '华东师范大学', region: '上海', tier: '985', url: 'https://www.ecnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '哲学', '体育学', '公共管理'] },
+        { name: '上海财经大学', region: '上海', tier: '211', url: 'https://www.sufe.edu.cn',
+          majors: ['金融学', '会计学', '经济学', '企业管理', '统计学'] },
+        { name: '华东政法大学', region: '上海', tier: '普通', url: 'https://www.ecupl.edu.cn',
+          majors: ['法学', '刑法学', '民商法学', '经济法学', '国际法学', '公共管理'] },
+        { name: '上海大学', region: '上海', tier: '211', url: 'https://www.shu.edu.cn',
+          majors: ['金融学', '法学', '社会学', '计算机科学与技术', '美术学'] },
+        // ═══ 广东 ═══
+        { name: '中山大学', region: '广东', tier: '985', url: 'https://www.sysu.edu.cn',
+          majors: ['法学', '公共管理', '工商管理', '金融学', '计算机科学与技术', '中国语言文学'] },
+        { name: '华南理工大学', region: '广东', tier: '985', url: 'https://www.scut.edu.cn',
+          majors: ['企业管理', '计算机科学与技术', '建筑学', '机械工程', '法学'] },
+        { name: '暨南大学', region: '广东', tier: '211', url: 'https://www.jnu.edu.cn',
+          majors: ['金融学', '企业管理', '会计学', '法学', '新闻学', '中国语言文学'] },
+        { name: '华南师范大学', region: '广东', tier: '211', url: 'https://www.scnu.edu.cn',
+          majors: ['教育学', '心理学', '体育学', '中国语言文学', '马克思主义理论'] },
+        { name: '广东外语外贸大学', region: '广东', tier: '普通', url: 'https://www.gdufs.edu.cn',
+          majors: ['外国语言文学', '国际商务', '法学', '企业管理'] },
+        { name: '深圳大学', region: '广东', tier: '普通', url: 'https://www.szu.edu.cn',
+          majors: ['心理学', '工商管理', '计算机科学与技术', '教育学'] },
+        { name: '南方医科大学', region: '广东', tier: '普通', url: 'https://www.smu.edu.cn',
+          majors: ['临床医学', '基础医学', '药学', '公共卫生'] },
+        { name: '广东工业大学', region: '广东', tier: '普通', url: 'https://www.gdut.edu.cn',
+          majors: ['机械工程', '计算机科学与技术', '工商管理', '项目管理'] },
+        // ═══ 江苏 ═══
+        { name: '南京大学', region: '江苏', tier: '985', url: 'https://www.nju.edu.cn',
+          majors: ['中国语言文学', '历史学', '哲学', '法学', '社会学', '公共管理', '计算机科学与技术'] },
+        { name: '东南大学', region: '江苏', tier: '985', url: 'https://www.seu.edu.cn',
+          majors: ['工商管理', '公共管理', '法学', '计算机科学与技术', '建筑学'] },
+        { name: '南京航空航天大学', region: '江苏', tier: '211', url: 'https://www.nuaa.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '机械工程', '法学'] },
+        { name: '苏州大学', region: '江苏', tier: '211', url: 'https://www.suda.edu.cn',
+          majors: ['法学', '金融学', '教育学', '中国语言文学', '医学', '设计学'] },
+        { name: '南京师范大学', region: '江苏', tier: '211', url: 'https://www.njnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '外国语言文学', '地理学'] },
+        { name: '河海大学', region: '江苏', tier: '211', url: 'https://www.hhu.edu.cn',
+          majors: ['工商管理', '水利工程', '计算机科学与技术', '法学', '公共管理'] },
+        { name: '中国药科大学', region: '江苏', tier: '211', url: 'https://www.cpu.edu.cn',
+          majors: ['药学', '中药学', '基础医学'] },
+        { name: '扬州大学', region: '江苏', tier: '普通', url: 'https://www.yzu.edu.cn',
+          majors: ['教育学', '中国语言文学', '法学', '工商管理'] },
+        { name: '江苏大学', region: '江苏', tier: '普通', url: 'https://www.ujs.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '法学', '机械工程'] },
+        // ═══ 浙江 ═══
+        { name: '浙江大学', region: '浙江', tier: '985', url: 'https://www.zju.edu.cn',
+          majors: ['法学', '公共管理', '企业管理', '计算机科学与技术', '教育学', '心理学'] },
+        { name: '浙江工业大学', region: '浙江', tier: '普通', url: 'https://www.zjut.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '药学', '机械工程', '土木工程'] },
+        { name: '浙江师范大学', region: '浙江', tier: '普通', url: 'https://www.zjnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '体育学'] },
+        { name: '浙江工商大学', region: '浙江', tier: '普通', url: 'https://www.zjgsu.edu.cn',
+          majors: ['金融学', '企业管理', '会计学', '法学', '统计学'] },
+        // ═══ 湖北 ═══
+        { name: '武汉大学', region: '湖北', tier: '985', url: 'https://www.whu.edu.cn',
+          majors: ['法学', '金融学', '企业管理', '新闻学', '公共管理', '计算机科学与技术'] },
+        { name: '华中科技大学', region: '湖北', tier: '985', url: 'https://www.hust.edu.cn',
+          majors: ['计算机科学与技术', '公共管理', '教育学', '法学', '社会学', '工商管理'] },
+        { name: '中南财经政法大学', region: '湖北', tier: '211', url: 'https://www.zuel.edu.cn',
+          majors: ['金融学', '会计学', '法学', '企业管理', '经济学', '行政管理'] },
+        { name: '华中师范大学', region: '湖北', tier: '211', url: 'https://www.ccnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '历史学', '政治学', '体育学'] },
+        { name: '中国地质大学(武汉)', region: '湖北', tier: '211', url: 'https://www.cug.edu.cn',
+          majors: ['工商管理', '公共管理', '法学', '计算机科学与技术'] },
+        // ═══ 四川 ═══
+        { name: '四川大学', region: '四川', tier: '985', url: 'https://www.scu.edu.cn',
+          majors: ['法学', '金融学', '企业管理', '公共管理', '临床医学', '中国语言文学'] },
+        { name: '电子科技大学', region: '四川', tier: '985', url: 'https://www.uestc.edu.cn',
+          majors: ['计算机科学与技术', '工商管理', '公共管理', '法学'] },
+        { name: '西南财经大学', region: '四川', tier: '211', url: 'https://www.swufe.edu.cn',
+          majors: ['金融学', '会计学', '经济学', '企业管理', '保险学', '统计学'] },
+        { name: '西南交通大学', region: '四川', tier: '211', url: 'https://www.swjtu.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '交通运输工程', '机械工程', '土木工程'] },
+        // ═══ 陕西 ═══
+        { name: '西安交通大学', region: '陕西', tier: '985', url: 'https://www.xjtu.edu.cn',
+          majors: ['工商管理', '公共管理', '金融学', '法学', '计算机科学与技术'] },
+        { name: '西北工业大学', region: '陕西', tier: '985', url: 'https://www.nwpu.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '机械工程', '法学'] },
+        { name: '西北大学', region: '陕西', tier: '211', url: 'https://www.nwu.edu.cn',
+          majors: ['中国语言文学', '历史学', '哲学', '法学', '经济学', '公共管理'] },
+        { name: '陕西师范大学', region: '陕西', tier: '211', url: 'https://www.snnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '历史学', '哲学', '体育学'] },
+        // ═══ 湖南 ═══
+        { name: '湖南大学', region: '湖南', tier: '985', url: 'https://www.hnu.edu.cn',
+          majors: ['法学', '金融学', '企业管理', '公共管理', '计算机科学与技术'] },
+        { name: '中南大学', region: '湖南', tier: '985', url: 'https://www.csu.edu.cn',
+          majors: ['法学', '公共管理', '计算机科学与技术', '临床医学', '工商管理'] },
+        { name: '湖南师范大学', region: '湖南', tier: '211', url: 'https://www.hunnu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '外国语言文学', '哲学', '法学'] },
+        // ═══ 辽宁 ═══
+        { name: '东北大学', region: '辽宁', tier: '985', url: 'https://www.neu.edu.cn',
+          majors: ['工商管理', '公共管理', '计算机科学与技术', '机械工程', '法学'] },
+        { name: '大连理工大学', region: '辽宁', tier: '985', url: 'https://www.dlut.edu.cn',
+          majors: ['工商管理', '公共管理', '计算机科学与技术', '土木工程', '法学'] },
+        { name: '辽宁大学', region: '辽宁', tier: '211', url: 'https://www.lnu.edu.cn',
+          majors: ['金融学', '经济学', '法学', '工商管理', '中国语言文学'] },
+        // ═══ 重庆 ═══
+        { name: '重庆大学', region: '重庆', tier: '985', url: 'https://www.cqu.edu.cn',
+          majors: ['工商管理', '公共管理', '法学', '计算机科学与技术', '土木工程'] },
+        { name: '西南大学', region: '重庆', tier: '211', url: 'https://www.swu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '哲学', '体育学'] },
+        // ═══ 福建 ═══
+        { name: '厦门大学', region: '福建', tier: '985', url: 'https://www.xmu.edu.cn',
+          majors: ['金融学', '会计学', '法学', '企业管理', '经济学', '新闻学', '公共管理'] },
+        { name: '福州大学', region: '福建', tier: '211', url: 'https://www.fzu.edu.cn',
+          majors: ['工商管理', '法学', '计算机科学与技术', '电气工程', '机械工程'] },
+        // ═══ 天津 ═══
+        { name: '南开大学', region: '天津', tier: '985', url: 'https://www.nankai.edu.cn',
+          majors: ['金融学', '企业管理', '会计学', '经济学', '法学', '公共管理'] },
+        { name: '天津大学', region: '天津', tier: '985', url: 'https://www.tju.edu.cn',
+          majors: ['工商管理', '公共管理', '法学', '计算机科学与技术', '土木工程'] },
+        // ═══ 山东 ═══
+        { name: '山东大学', region: '山东', tier: '985', url: 'https://www.sdu.edu.cn',
+          majors: ['法学', '金融学', '中国语言文学', '公共管理', '计算机科学与技术', '临床医学'] },
+        { name: '中国海洋大学', region: '山东', tier: '985', url: 'https://www.ouc.edu.cn',
+          majors: ['工商管理', '法学', '公共管理', '计算机科学与技术'] },
+        // ═══ 吉林 ═══
+        { name: '吉林大学', region: '吉林', tier: '985', url: 'https://www.jlu.edu.cn',
+          majors: ['法学', '金融学', '公共管理', '计算机科学与技术', '临床医学', '哲学'] },
+        { name: '东北师范大学', region: '吉林', tier: '211', url: 'https://www.nenu.edu.cn',
+          majors: ['教育学', '心理学', '中国语言文学', '历史学', '体育学', '马克思主义理论'] },
+        // ═══ 黑龙江 ═══
+        { name: '哈尔滨工业大学', region: '黑龙江', tier: '985', url: 'https://www.hit.edu.cn',
+          majors: ['工商管理', '公共管理', '计算机科学与技术', '机械工程', '土木工程'] },
+        { name: '黑龙江大学', region: '黑龙江', tier: '普通', url: 'https://www.hlju.edu.cn',
+          majors: ['法学', '中国语言文学', '外国语言文学', '哲学', '公共管理'] },
+        // ═══ 安徽 ═══
+        { name: '安徽大学', region: '安徽', tier: '211', url: 'https://www.ahu.edu.cn',
+          majors: ['法学', '经济学', '中国语言文学', '计算机科学与技术', '工商管理'] },
+        { name: '合肥工业大学', region: '安徽', tier: '211', url: 'https://www.hfut.edu.cn',
+          majors: ['工商管理', '计算机科学与技术', '法学', '公共管理'] },
+        // ═══ 其他地区 ═══
+        { name: '兰州大学', region: '其他', tier: '985', url: 'https://www.lzu.edu.cn',
+          majors: ['法学', '公共管理', '工商管理', '中国语言文学', '历史学'] },
+        { name: '云南大学', region: '其他', tier: '211', url: 'https://www.ynu.edu.cn',
+          majors: ['法学', '经济学', '公共管理', '中国语言文学', '计算机科学与技术'] },
+        { name: '郑州大学', region: '其他', tier: '211', url: 'https://www.zzu.edu.cn',
+          majors: ['法学', '金融学', '公共管理', '计算机科学与技术', '临床医学'] },
+        { name: '广西大学', region: '其他', tier: '211', url: 'https://www.gxu.edu.cn',
+          majors: ['法学', '金融学', '工商管理', '公共管理', '计算机科学与技术'] },
+        { name: '南昌大学', region: '其他', tier: '211', url: 'https://www.ncu.edu.cn',
+          majors: ['法学', '公共管理', '工商管理', '临床医学', '中国语言文学'] },
+        { name: '河北大学', region: '其他', tier: '普通', url: 'https://www.hbu.edu.cn',
+          majors: ['法学', '中国语言文学', '教育学', '公共管理', '计算机科学与技术'] },
+        { name: '山西大学', region: '其他', tier: '普通', url: 'https://www.sxu.edu.cn',
+          majors: ['法学', '哲学', '中国语言文学', '工商管理', '计算机科学与技术'] },
+        { name: '内蒙古大学', region: '其他', tier: '211', url: 'https://www.imu.edu.cn',
+          majors: ['法学', '中国语言文学', '历史学', '经济学', '计算机科学与技术'] },
+        { name: '海南大学', region: '其他', tier: '211', url: 'https://www.hainanu.edu.cn',
+          majors: ['法学', '工商管理', '公共管理', '计算机科学与技术'] },
+        { name: '贵州大学', region: '其他', tier: '211', url: 'https://www.gzu.edu.cn',
+          majors: ['法学', '公共管理', '工商管理', '计算机科学与技术'] },
+        { name: '宁夏大学', region: '其他', tier: '211', url: 'https://www.nxu.edu.cn',
+          majors: ['法学', '公共管理', '工商管理', '中国语言文学'] },
+        { name: '新疆大学', region: '其他', tier: '211', url: 'https://www.xju.edu.cn',
+          majors: ['法学', '经济学', '中国语言文学', '计算机科学与技术', '工商管理'] },
+        { name: '西藏大学', region: '其他', tier: '211', url: 'https://www.utibet.edu.cn',
+          majors: ['教育学', '中国语言文学', '法学', '公共管理'] },
+    ];
+
+    // 提取所有专业（去重排序）
+    function getAllMajors() {
+        const set = new Set();
+        universities.forEach(u => u.majors.forEach(m => set.add(m)));
+        return Array.from(set).sort();
+    }
+
+    function renderTable(region, tier, major) {
+        const tbody = document.getElementById('uniBody');
+        const count = document.getElementById('uniCount');
+
+        const filtered = universities.filter(u => {
+            if (region !== 'all' && u.region !== region) return false;
+            if (tier !== 'all' && u.tier !== tier) return false;
+            if (major !== 'all' && !u.majors.includes(major)) return false;
+            return true;
+        });
+
+        count.textContent = '共 ' + filtered.length + ' 所院校';
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:40px">没有匹配的院校，试试调整筛选条件</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(u => {
+            const tierLabel = u.tier === '985' ? '985' : u.tier === '211' ? '211' : '普通院校';
+            const tagClass = 'tag-' + u.region;
+            return '<tr>' +
+                '<td data-label="院校名称"><a href="' + u.url + '" class="uni-name-link" target="_blank">' + u.name + ' ↗</a></td>' +
+                '<td data-label="地区"><span class="uni-tag-sm ' + tagClass + '">' + u.region + '</span></td>' +
+                '<td data-label="层次"><span class="uni-tag-sm tag-' + u.tier + '">' + tierLabel + '</span></td>' +
+                '<td data-label="招生专业"><div class="uni-majors">' +
+                u.majors.map(m => '<a href="' + u.url + '" target="_blank" class="uni-major-link">' + m + '</a>').join('') +
+                '</div></td>' +
+                '</tr>';
+        }).join('');
+    }
+
+    function update() {
+        renderTable(
+            document.getElementById('filterRegion').value,
+            document.getElementById('filterTier').value,
+            document.getElementById('filterMajor').value
+        );
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const majorSel = document.getElementById('filterMajor');
+        getAllMajors().forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m;
+            opt.textContent = m;
+            majorSel.appendChild(opt);
+        });
+
+        document.getElementById('filterRegion').addEventListener('change', update);
+        document.getElementById('filterTier').addEventListener('change', update);
+        document.getElementById('filterMajor').addEventListener('change', update);
+        update();
+    });
+    </script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>

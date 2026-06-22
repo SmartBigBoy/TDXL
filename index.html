@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同等学力申硕 — 信息手册</title>
+    <meta name="description" content="同等学力申硕报考指南，汇总政策法规、院校信息、考试备考、防骗提醒等实用信息，帮你避开机构陷阱。">
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Mobile toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="切换导航">☰</button>
+
+    <!-- ========== Sidebar ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="site-title">📘 同等学力申硕</div>
+            <div class="site-subtitle">报考信息手册</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">总览</div>
+                <a href="index.html"><span class="nav-icon">🏠</span> 首页</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">报考指南</div>
+                <a href="guide.html"><span class="nav-icon">📋</span> 报考流程</a>
+                <a href="policy.html"><span class="nav-icon">📜</span> 政策法规</a>
+                <a href="exam.html"><span class="nav-icon">📝</span> 考试备考</a>
+                <a href="cost.html"><span class="nav-icon">💰</span> 费用明细</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">院校专业</div>
+                <a href="universities.html"><span class="nav-icon">🏛️</span> 院校库</a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">重要提醒</div>
+                <a href="scam-alert.html"><span class="nav-icon">⚠️</span> 防骗指南</a>
+                <a href="faq.html"><span class="nav-icon">❓</span> 常见问题</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ========== Main Content ========== -->
+    <main class="main-content">
+
+        <!-- ===== 首页英雄区 ===== -->
+        <section class="hero">
+            <div class="hero-body">
+                <div class="hero-emblem">🎓</div>
+                <h1 class="hero-title">同等学力申硕</h1>
+                <p class="hero-subtitle">报考信息手册</p>
+                <p class="hero-desc">汇集政策原文 · 报考流程 · 院校信息 · 防骗提醒<br>一个帮你做出明智选择的公益信息平台</p>
+                <div class="hero-metrics">
+                    <span class="hero-metric">📋 全流程透明</span>
+                    <span class="hero-metric-sep"></span>
+                    <span class="hero-metric">⚠️ 骗局揭露</span>
+                    <span class="hero-metric-sep"></span>
+                    <span class="hero-metric">📜 政策原文可查</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="content">
+
+            <!-- ===== 快捷入口 ===== -->
+            <div class="quick-grid">
+                <a href="guide.html" class="quick-link">
+                    <span class="ql-icon">📋</span>
+                    <span class="ql-text">报考流程</span>
+                    <span class="ql-arrow">→</span>
+                </a>
+                <a href="policy.html" class="quick-link">
+                    <span class="ql-icon">📜</span>
+                    <span class="ql-text">政策法规</span>
+                    <span class="ql-arrow">→</span>
+                </a>
+                <a href="exam.html" class="quick-link">
+                    <span class="ql-icon">📝</span>
+                    <span class="ql-text">考试备考</span>
+                    <span class="ql-arrow">→</span>
+                </a>
+                <a href="cost.html" class="quick-link">
+                    <span class="ql-icon">💰</span>
+                    <span class="ql-text">费用明细</span>
+                    <span class="ql-arrow">→</span>
+                </a>
+                <a href="scam-alert.html" class="quick-link">
+                    <span class="ql-icon">⚠️</span>
+                    <span class="ql-text">防骗指南</span>
+                    <span class="ql-arrow">→</span>
+                </a>
+                <a href="faq.html" class="quick-link">
+                    <span class="ql-icon">❓</span>
+                    <span class="ql-text">常见问题</span>
+                    <span class="ql-arrow">→</span>
+                </a>
+            </div>
+
+            <div class="callout callout-danger">
+                <div class="callout-title">⚠️ 重要提醒</div>
+                <p><strong>同等学力申硕 ≠ 免考拿证。</strong> 国家规定必须通过统一的外国语水平和学科综合水平全国统一考试，并且完成论文答辩后才能获得硕士学位。任何声称"包过""免考""快速拿证"的机构都是诈骗。</p>
+            </div>
+
+            <!-- ===== 趋势图 ===== -->
+            <h2>报考人数持续增长</h2>
+            <p>近年同等学力申硕报考人数呈明显上升趋势。以下数据综合自多家教育机构统计，仅供参考。</p>
+            <div class="chart-wrap">
+                <canvas id="trendChart" width="700" height="380"></canvas>
+            </div>
+            <p class="chart-note">⚠️ 以上数据为行业内估算值，仅供参考。毕业人数、在读人数等暂无可靠公开数据。</p>
+
+            <!-- ===== 什么是同等学力申硕 ===== -->
+            <h2>什么是同等学力申硕？</h2>
+            <p>同等学力申硕，全称"同等学力人员申请硕士学位"，是国家为在职人员开辟的一条获取硕士学位的通道。根据《中华人民共和国学位条例》规定，具有研究生毕业同等学力的人员，可以按照相关规定向学位授予单位申请硕士学位。</p>
+            <p>简单来说：<strong>先入学修课程（研修班）→ 参加全国统考 → 完成论文答辩 → 获得硕士学位证书</strong>（单证：学位证，无学历证）。</p>
+
+            <!-- ===== 学历 vs 学位 ===== -->
+            <h2>学历教育 vs 学位教育</h2>
+            <p>很多人在刚开始了解同等学力申硕时，会被"学历""学位""单证""双证"这些概念搞糊涂。其实核心区别就一句话：<strong>学历=读没读过书，学位=学术水平到没到</strong>。</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th style="width:28%">概念</th><th style="width:36%">说明</th><th style="width:36%">通俗理解</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>学历教育</strong><br><span style="font-size:0.78rem;color:var(--text-muted)">（双证）</span></td>
+                            <td>按国家招生计划入学，修满学分、完成学业后颁发<strong>毕业证书（学历证）</strong>，符合条件的同时授予<strong>学位证书</strong>。</td>
+                            <td>就是"上了这个学"的证明。全日制本科、全日制/非全日制研究生都属于学历教育，毕业后学历层次提升。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>学位教育</strong><br><span style="font-size:0.78rem;color:var(--text-muted)">（单证）</span></td>
+                            <td>以获取学位为目标的教育形式，毕业后颁发<strong>学位证书</strong>，但无毕业证书。学位证书证明你的学术水平达到了硕士标准。</td>
+                            <td>"水平到了，但不一定上了这个学"。同等学力申硕即属此类——你的学历不变，但学位提升为硕士。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>后续学历（学位）教育</strong></td>
+                            <td>在职人员在工作后继续深造的各种途径的总称，包括学历教育和学位教育两种路径。</td>
+                            <td>就是"工作了以后还想继续学"的各种方式，包括考双证研究生和同等学力申硕等。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-visual">
+                <div class="callout-title">📌 一张图看懂</div>
+                <p style="margin-bottom:18px">毕业后你拿到什么：</p>
+                <div class="diploma-compare">
+                    <div class="diploma-card diploma-card-blue">
+                        <div class="diploma-icon">📜</div>
+                        <div class="diploma-title">学历证书</div>
+                        <div class="diploma-sub">（毕业证）</div>
+                        <div class="diploma-desc">证明你读过<br>这个层次的教育</div>
+                    </div>
+                    <div class="diploma-plus">+</div>
+                    <div class="diploma-card diploma-card-gold">
+                        <div class="diploma-icon">🎖️</div>
+                        <div class="diploma-title">学位证书</div>
+                        <div class="diploma-sub">（学位证）</div>
+                        <div class="diploma-desc">证明你达到了<br>这个层次的学术水平</div>
+                    </div>
+                </div>
+                <div class="diploma-paths">
+                    <div class="diploma-path">
+                        <span class="path-badge path-badge-both">🟦🟨 双证</span>
+                        <span>全日制 / 非全日制研究生</span>
+                        <span class="path-note">学历提升 + 学位提升</span>
+                    </div>
+                    <div class="diploma-path">
+                        <span class="path-badge path-badge-single">🟨 单证</span>
+                        <span>同等学力申硕</span>
+                        <span class="path-note">学历不变，学位提升为硕士</span>
+                    </div>
+                </div>
+                <p style="margin-top:16px">很多体制内评职称、考博、出国留学，要求的是<strong>硕士学位</strong>而非研究生学历，所以同等学力申硕在这些场景下够用。</p>
+                <p style="margin-top:12px">💡 <strong>个税附加扣除小贴士</strong>：后续学历（学位）教育期间，每年可在个人所得税申报中填写 <strong>"继续教育"专项附加扣除</strong>，按照每月 400 元标准定额扣除（最长不超过 48 个月）。同等学力申硕的研修班学费属于继续教育支出，符合条件者可申请抵扣，具体以当年税务政策为准。</p>
+            </div>
+
+            <!-- ===== 适合人群 ===== -->
+            <h2>适合人群</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">💼</div>
+                    <h4>在职人员</h4>
+                    <p>已有工作，需要硕士学位用于晋升、评职称</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎓</div>
+                    <h4>本科毕业</h4>
+                    <p>已获学士学位并工作 3 年以上</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⏱️</div>
+                    <h4>时间有限</h4>
+                    <p>无法参加全日制研究生考试，需要灵活学习方式</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏛️</div>
+                    <h4>体制内人员</h4>
+                    <p>公务员、事业单位、国企等需要硕士学位评职称</p>
+                </div>
+            </div>
+
+            <!-- ===== 对比 ===== -->
+            <div class="callout callout-info">
+                <div class="callout-title">💡 与全日制/非全日制研究生的区别</div>
+                <p><strong>同等学力申硕</strong>（单证）：免入学考试，先上课后考试，毕业获硕士学位证书（无学历证）。<br>
+                <strong>非全日制研究生</strong>（双证）：参加全国统考入学，毕业获研究生毕业证+硕士学位证。<br>
+                <strong>全日制研究生</strong>（双证）：脱产学习，统考入学，毕业获双证。</p>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h2>💬 交流讨论</h2>
+            <div id="giscus-comments"></div>
+        </div>
+
+        <footer class="page-footer">
+            <p>📢 本站信息仅供参考，具体政策以各院校及教育部官方文件为准。</p>
+            <p>如发现信息有误，欢迎在评论区指出或 <a href="https://github.com/">提交 Issue</a>。</p>
+        </footer>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('trendChart');
+        if (!ctx) return;
+        ctx = ctx.getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024'],
+                datasets: [{
+                    label: '报考人数（万人）',
+                    data: [30, 35, 42, 50, 55],
+                    backgroundColor: [
+                        'rgba(27, 40, 56, 0.7)',
+                        'rgba(27, 40, 56, 0.75)',
+                        'rgba(27, 40, 56, 0.8)',
+                        'rgba(201, 149, 60, 0.8)',
+                        'rgba(201, 149, 60, 0.9)'
+                    ],
+                    borderColor: [
+                        '#1B2838', '#1B2838', '#1B2838', '#C9953C', '#C9953C'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1B2838',
+                        titleFont: { size: 13, family: '-apple-system, sans-serif' },
+                        bodyFont: { size: 14, family: '-apple-system, sans-serif', weight: 'bold' },
+                        padding: 12,
+                        cornerRadius: 6,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' 万人';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 65,
+                        grid: { color: 'rgba(0,0,0,0.06)' },
+                        ticks: {
+                            font: { size: 12, family: '-apple-system, sans-serif' },
+                            color: '#7D7872',
+                            callback: function(value) { return value + '万'; }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 13, family: '-apple-system, sans-serif', weight: 'bold' },
+                            color: '#2C2A28'
+                        }
+                    }
+                }
+            }
+        });
+    });
+    </script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
