@@ -51,26 +51,12 @@
         const container = document.getElementById('giscus-comments');
         if (!container) return;
 
-        // ── 配置区域 ──
+        // ── Giscus 配置 ──
         const GISCUS_REPO = 'SmartBigBoy/TDXL';
-        const GISCUS_REPO_ID = '';         // ⬅ 去 giscus.app 获取
+        const GISCUS_REPO_ID = 'R_kgDOTCHdUQ';
         const GISCUS_CATEGORY = 'General';
-        const GISCUS_CATEGORY_ID = '';     // ⬅ 去 giscus.app 获取
-        // ──────────────
-
-        if (!GISCUS_REPO_ID || !GISCUS_CATEGORY_ID) {
-            container.innerHTML =
-                '<div style="padding:20px;background:#FBF0EE;border-radius:8px;font-size:0.9rem">' +
-                '<strong style="color:#B85450">💬 评论功能待配置</strong>' +
-                '<p style="margin-top:8px;color:var(--text-secondary)">站长请按以下步骤操作：</p>' +
-                '<ol style="margin-top:6px;padding-left:18px;color:var(--text-secondary);line-height:1.8">' +
-                '<li>去仓库 <strong>Settings → General</strong>，勾选 <strong>Discussions</strong></li>' +
-                '<li>安装 <a href="https://github.com/apps/giscus" target="_blank">Giscus App</a> 到本仓库</li>' +
-                '<li>访问 <a href="https://giscus.app" target="_blank">giscus.app</a>，输入仓库名 <code>SmartBigBoy/TDXL</code></li>' +
-                '<li>把生成的 <code>data-repo-id</code> 和 <code>data-category-id</code> 填入 <code>scripts/main.js</code></li>' +
-                '</ol></div>';
-            return;
-        }
+        const GISCUS_CATEGORY_ID = 'DIC_kwDOTCHdUc4C_ry5';
+        // ────────────────
 
         const script = document.createElement('script');
         script.src = 'https://giscus.app/client.js';
@@ -82,8 +68,8 @@
         script.setAttribute('data-strict', '0');
         script.setAttribute('data-reactions-enabled', '1');
         script.setAttribute('data-emit-metadata', '0');
-        script.setAttribute('data-input-position', 'top');
-        script.setAttribute('data-theme', 'light');
+        script.setAttribute('data-input-position', 'bottom');
+        script.setAttribute('data-theme', 'preferred_color_scheme');
         script.setAttribute('data-lang', 'zh-CN');
         script.setAttribute('crossorigin', 'anonymous');
         script.async = true;
