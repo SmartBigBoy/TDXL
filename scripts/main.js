@@ -84,7 +84,35 @@
         });
 
         html += '</nav>';
+
+        // 打赏区域
+        html += '<div class="sidebar-donate">';
+        html += '<div class="sidebar-donate-title">☕ 支持本站</div>';
+        html += '<button class="sidebar-donate-btn" id="donateBtn" aria-expanded="false" aria-controls="donatePanel">';
+        html += '<span>请我喝杯咖啡</span><span class="donate-arrow">▼</span>';
+        html += '</button>';
+        html += '<div class="sidebar-donate-panel" id="donatePanel" role="region" aria-label="打赏收款码">';
+        html += '<p class="donate-desc">如果本站对你有帮助，欢迎打赏支持，我会持续更新维护。</p>';
+        html += '<div class="donate-qr">';
+        html += '<img src="images/donate.png" alt="微信支付收款码" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';">';
+        html += '<p class="donate-placeholder" style="display:none">请上传收款码图片到 images/donate.png</p>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
         sidebar.innerHTML = html;
+
+        // 绑定打赏按钮事件
+        const donateBtn = document.getElementById('donateBtn');
+        const donatePanel = document.getElementById('donatePanel');
+        if (donateBtn && donatePanel) {
+            donateBtn.addEventListener('click', () => {
+                const isOpen = donatePanel.classList.contains('open');
+                donatePanel.classList.toggle('open');
+                donateBtn.classList.toggle('open');
+                donateBtn.setAttribute('aria-expanded', !isOpen);
+            });
+        }
     }
 
     // ========== 侧边栏切换（移动端）==========

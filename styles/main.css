@@ -141,6 +141,90 @@ body {
 
 .sidebar-nav a .nav-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
 
+/* ----- Sidebar Donate ----- */
+.sidebar-donate {
+    margin-top: auto;
+    padding: 16px 20px 20px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.sidebar-donate-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.sidebar-donate-btn {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: #8B6F2C;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.sidebar-donate-btn:hover {
+    background: var(--accent);
+    color: #fff;
+}
+.sidebar-donate-btn.open .donate-arrow {
+    transform: rotate(180deg);
+}
+
+.donate-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.25s ease;
+}
+
+.sidebar-donate-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+}
+.sidebar-donate-panel.open {
+    max-height: 500px;
+    padding-top: 12px;
+}
+
+.donate-desc {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.donate-qr {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+.donate-qr img {
+    max-width: 100%;
+    width: 180px;
+    height: auto;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+}
+.donate-placeholder {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 20px;
+}
+
 /* Sidebar toggle (mobile) */
 .sidebar-toggle {
     display: none;
@@ -1175,6 +1259,21 @@ input:focus-visible {
 
     .faq-question:hover {
         background: var(--surface-alt);
+    }
+
+    .sidebar-donate-btn {
+        background: var(--accent-light);
+        border-color: var(--accent);
+        color: #D4B86A;
+    }
+    .sidebar-donate-btn:hover {
+        background: var(--accent);
+        color: #1A1D21;
+    }
+
+    .donate-qr {
+        background: #1E2126;
+        border-color: var(--border);
     }
 
     .back-to-top {
