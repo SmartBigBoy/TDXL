@@ -3,8 +3,14 @@
    Design: academic document meets modern clarity
    ============================================= */
 
-/* ----- Google Fonts: Noto Serif SC ----- */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&display=swap');
+/* ----- Google Fonts: Noto Serif SC (loaded via <link> in HTML for performance) ----- */
+@font-face {
+    font-family: 'Noto Serif SC';
+    font-style: normal;
+    font-weight: 600 900;
+    font-display: swap;
+    src: local('Noto Serif SC SemiBold'), local('NotoSerifSC-SemiBold');
+}
 
 /* ----- CSS Variables ----- */
 :root {
@@ -794,9 +800,399 @@ tbody tr:hover { background: var(--surface); }
     .hero-metrics { margin-top: 20px; }
 }
 
+/* ===== Skip Link (可访问性) ===== */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: #fff;
+    padding: 8px 16px;
+    z-index: 1000;
+    text-decoration: none;
+    font-size: 0.88rem;
+    border-radius: 0 0 6px 0;
+    transition: top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ===== Focus Styles (可访问性) ===== */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.sidebar-nav a:focus-visible {
+    outline-offset: -2px;
+}
+
+/* ===== Back to Top Button ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.back-to-top:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+
+/* ===== FAQ Accordion ===== */
+.faq-item {
+    margin-bottom: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+.faq-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.faq-item.open {
+    border-color: var(--accent);
+}
+
+.faq-question {
+    width: 100%;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: inherit;
+    transition: background 0.2s;
+}
+.faq-question:hover {
+    background: var(--surface);
+}
+.faq-q-text {
+    flex: 1;
+    line-height: 1.5;
+}
+.faq-icon {
+    font-size: 1.2rem;
+    color: var(--accent);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+    font-weight: 400;
+}
+.faq-item.open .faq-icon {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    padding: 0 20px;
+}
+.faq-item.open .faq-answer {
+    max-height: 2000px;
+    padding: 0 20px 18px;
+}
+.faq-answer p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+.faq-answer p:last-child {
+    margin-bottom: 0;
+}
+.faq-answer .table-wrap {
+    margin: 12px 0;
+}
+
+/* ===== Prev / Next Navigation ===== */
+.prev-next-nav {
+    max-width: var(--content-max);
+    margin: 48px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.pn-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+}
+.pn-link:hover {
+    border-color: var(--accent);
+    box-shadow: 0 3px 12px rgba(201,149,60,0.1);
+    transform: translateY(-1px);
+}
+.pn-prev { text-align: left; }
+.pn-next { text-align: right; }
+.pn-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+.pn-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+.pn-disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .prev-next-nav {
+        grid-template-columns: 1fr;
+    }
+    .pn-next { text-align: left; }
+}
+
+/* ===== Last Updated ===== */
+.last-updated {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    margin-bottom: 8px !important;
+}
+
+/* ===== University Search Box ===== */
+.uni-search-input {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.88rem;
+    background: #fff;
+    color: var(--text);
+    min-width: 160px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+.uni-search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+.uni-search-input::placeholder {
+    color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+    .uni-search-input {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary:       #4A7BA8;
+        --primary-light: #6B9BC7;
+        --primary-dark:  #2C4A6E;
+        --accent:        #D4A84B;
+        --accent-light:  #3D3320;
+        --danger:        #E0706A;
+        --danger-bg:     #3A2422;
+        --success:       #5AA882;
+        --success-bg:    #1E2E26;
+        --info-bg:       #1E2A3A;
+
+        --surface:       #1A1D21;
+        --surface-alt:   #24282D;
+        --border:        #33383F;
+        --text:          #E0DDD8;
+        --text-secondary:#A5A099;
+        --text-muted:    #7D7872;
+    }
+
+    body {
+        background: var(--surface);
+    }
+
+    .sidebar {
+        background: #14171A;
+        border-right-color: var(--border);
+    }
+
+    .sidebar-nav a:hover {
+        background: rgba(74, 123, 168, 0.08);
+    }
+    .sidebar-nav a.active {
+        background: rgba(74, 123, 168, 0.12);
+    }
+
+    .card,
+    .callout,
+    .toc,
+    .chart-wrap,
+    .scam-card,
+    .step,
+    .faq-item,
+    .pn-link {
+        background: #1E2126;
+        border-color: var(--border);
+    }
+
+    .callout-visual {
+        background: #1E2126;
+    }
+
+    table {
+        background: #1E2126;
+    }
+    thead th {
+        background: var(--surface-alt);
+    }
+    tbody tr:hover {
+        background: var(--surface-alt);
+    }
+    tbody td {
+        border-bottom-color: var(--border);
+    }
+
+    blockquote {
+        background: #1E2126;
+    }
+
+    .content blockquote {
+        background: #1E2126;
+    }
+
+    .diploma-card-blue {
+        background: linear-gradient(180deg, #1E2A3A 0%, #1E2126 100%);
+        border-color: #2C4A6E;
+    }
+    .diploma-card-gold {
+        background: linear-gradient(180deg, #3D3320 0%, #1E2126 100%);
+        border-color: #6B5A2E;
+    }
+
+    .diploma-path {
+        background: var(--surface-alt);
+    }
+
+    .hero-metrics {
+        background: var(--surface-alt);
+    }
+
+    .quick-link {
+        background: #1E2126;
+        border-color: var(--border);
+    }
+    .quick-link:hover {
+        color: var(--primary-light);
+    }
+
+    .uni-table {
+        background: #1E2126;
+    }
+    .uni-table thead th {
+        background: var(--surface-alt);
+    }
+    .uni-table tbody tr:hover {
+        background: var(--surface-alt);
+    }
+    .uni-table tbody td {
+        border-bottom-color: var(--border);
+    }
+
+    .uni-filter-bar,
+    .uni-note {
+        background: #1E2126;
+        border-color: var(--border);
+    }
+
+    .uni-major-link {
+        background: var(--surface-alt);
+        border-color: var(--border);
+        color: var(--text-secondary);
+    }
+    .uni-major-link:hover {
+        background: var(--accent-light);
+        border-color: var(--accent);
+        color: var(--text);
+    }
+
+    select,
+    input[type="text"] {
+        background: #14171A;
+        border-color: var(--border);
+        color: var(--text);
+    }
+
+    .faq-question:hover {
+        background: var(--surface-alt);
+    }
+
+    .back-to-top {
+        background: var(--primary-dark);
+    }
+    .back-to-top:hover {
+        background: var(--primary);
+    }
+
+    @media print {
+        body { background: #fff; color: #000; }
+    }
+}
+
 /* ===== Print ===== */
 @media print {
-    .sidebar, .sidebar-toggle, .comments-section { display: none; }
+    .sidebar, .sidebar-toggle, .comments-section,
+    .back-to-top, .prev-next-nav, .skip-link { display: none; }
     .main-content { margin-left: 0; padding: 20px; }
     body { background: #fff; }
 }
